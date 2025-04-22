@@ -1,0 +1,4281 @@
+{
+  "info": {
+    "title": "Fohlio Open API",
+    "version": "0.0.1"
+  },
+  "swagger": "2.0",
+  "produces": [
+    "application/json"
+  ],
+  "host": "app.fohlio.com",
+  "basePath": "/be",
+  "tags": [
+    {
+      "name": "tokens",
+      "description": "Operations about tokens"
+    },
+    {
+      "name": "projects",
+      "description": "Operations about projects"
+    },
+    {
+      "name": "divisions",
+      "description": "Operations about divisions"
+    },
+    {
+      "name": "columns",
+      "description": "Operations about columns"
+    },
+    {
+      "name": "contacts",
+      "description": "Operations about contacts"
+    },
+    {
+      "name": "templates",
+      "description": "Operations about templates"
+    },
+    {
+      "name": "users",
+      "description": "Operations about users"
+    },
+    {
+      "name": "roles",
+      "description": "Operations about roles"
+    },
+    {
+      "name": "client_proposals",
+      "description": "Operations about client_proposals"
+    },
+    {
+      "name": "client_invoices",
+      "description": "Operations about client_invoices"
+    },
+    {
+      "name": "purchase_orders",
+      "description": "Operations about purchase_orders"
+    },
+    {
+      "name": "team",
+      "description": "Operations about teams"
+    }
+  ],
+  "paths": {
+    "/openapi/tokens/current": {
+      "get": {
+        "summary": "Return current API token for specified user.(OLD))",
+        "description": "",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "email",
+            "description": "User email",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "query",
+            "name": "password",
+            "description": "User password",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return current API token for specified user.(OLD))",
+            "schema": {
+              "$ref": "#/definitions/OpenAPI_V1_Entities_Token"
+            }
+          }
+        },
+        "tags": [
+          "tokens"
+        ],
+        "operationId": "getOpenapiTokensCurrent"
+      },
+      "post": {
+        "summary": "Return current API token for specified user.",
+        "description": "",
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "formData",
+            "name": "email",
+            "description": "User email",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "formData",
+            "name": "password",
+            "description": "User password",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Return current API token for specified user.",
+            "schema": {
+              "$ref": "#/definitions/OpenAPI_V1_Entities_Token"
+            }
+          }
+        },
+        "tags": [
+          "tokens"
+        ],
+        "operationId": "postOpenapiTokensCurrent"
+      }
+    },
+    "/openapi/projects": {
+      "post": {
+        "summary": "Creates a new project",
+        "description": "User must have permission to create projects",
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "description": "Access token",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "header",
+            "name": "Accept-Version",
+            "description": "API version",
+            "type": "string",
+            "required": false
+          },
+          {
+            "in": "formData",
+            "name": "name",
+            "description": "The name of the project",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "formData",
+            "name": "code",
+            "description": "The code/number of the project",
+            "type": "string",
+            "required": false
+          },
+          {
+            "in": "formData",
+            "name": "iso_currency_code",
+            "description": "The currency of the project",
+            "type": "string",
+            "default": "USD",
+            "required": false
+          },
+          {
+            "in": "formData",
+            "name": "source_project_id",
+            "description": "The ID of a project from which to copy categories, project users, a currency, etc.",
+            "type": "integer",
+            "format": "int32",
+            "required": false
+          },
+          {
+            "in": "formData",
+            "name": "client_id",
+            "description": "The contact ID of a client",
+            "type": "integer",
+            "format": "int32",
+            "required": false
+          },
+          {
+            "in": "formData",
+            "name": "billing_client_id",
+            "description": "The contact ID of a billing client",
+            "type": "integer",
+            "format": "int32",
+            "required": false
+          },
+          {
+            "in": "formData",
+            "name": "category_ids[]",
+            "description": "The categories available in the project",
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "required": false
+          },
+          {
+            "in": "formData",
+            "name": "project_users[][user_id]",
+            "type": "array",
+            "required": true,
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "in": "formData",
+            "name": "project_users[][access]",
+            "type": "array",
+            "required": true,
+            "items": {
+              "type": "string",
+              "enum": [
+                "admin",
+                "edit",
+                "view"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Creates a new project",
+            "schema": {
+              "$ref": "#/definitions/OpenAPI_V1_Entities_Project"
+            }
+          }
+        },
+        "tags": [
+          "projects"
+        ],
+        "operationId": "postOpenapiProjects"
+      },
+      "get": {
+        "summary": "Returns a list of team and external projects user has access to",
+        "description": "User role should have at least \"View\" access permission in \"Dashboard and Recycle Bin\".",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "description": "Access token",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "header",
+            "name": "Accept-Version",
+            "description": "API version",
+            "type": "string",
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns a list of team and external projects user has access to",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/OpenAPI_V1_Entities_Project"
+              }
+            }
+          }
+        },
+        "tags": [
+          "projects"
+        ],
+        "operationId": "getOpenapiProjects"
+      }
+    },
+    "/openapi/projects/team": {
+      "get": {
+        "summary": "Returns a list of team projects user has access to.",
+        "description": "User role should have at least \"View\" access permission in \"Dashboard and Recycle Bin\".",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "description": "Access token",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "header",
+            "name": "Accept-Version",
+            "description": "API version",
+            "type": "string",
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns a list of team projects user has access to.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/OpenAPI_V1_Entities_Project"
+              }
+            }
+          }
+        },
+        "tags": [
+          "projects"
+        ],
+        "operationId": "getOpenapiProjectsTeam"
+      }
+    },
+    "/openapi/projects/{id}/revit/mappings": {
+      "get": {
+        "description": "Responds with project revit mappings",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "description": "Access token",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "header",
+            "name": "Accept-Version",
+            "description": "API version",
+            "type": "string",
+            "required": false
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "description": "Project ID",
+            "type": "integer",
+            "format": "int32",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Responds with project revit mappings",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/OpenAPI_V1_Entities_Revit_Mappings"
+              }
+            }
+          }
+        },
+        "tags": [
+          "projects"
+        ],
+        "operationId": "getOpenapiProjectsIdRevitMappings"
+      },
+      "post": {
+        "description": "Creates project revit mappings",
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "description": "Access token",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "header",
+            "name": "Accept-Version",
+            "description": "API version",
+            "type": "string",
+            "required": false
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "description": "Project ID",
+            "type": "integer",
+            "format": "int32",
+            "required": true
+          },
+          {
+            "in": "formData",
+            "name": "revit_mappings[]",
+            "description": "Revit Mappings",
+            "type": "array",
+            "items": {
+              "type": "json"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Creates project revit mappings",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/OpenAPI_V1_Entities_Revit_Mappings"
+              }
+            }
+          }
+        },
+        "tags": [
+          "projects"
+        ],
+        "operationId": "postOpenapiProjectsIdRevitMappings"
+      }
+    },
+    "/openapi/projects/{id}/reports": {
+      "get": {
+        "summary": "Returns project reports generated by the user.",
+        "description": "User role should have at least \"View\" access permission in \"Dashboard and Recycle Bin.\" The list is limited to 50 reports and can be navigated with the help of \"page\" parameter.",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "description": "Access token",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "header",
+            "name": "Accept-Version",
+            "description": "API version",
+            "type": "string",
+            "required": false
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "description": "Project ID",
+            "type": "integer",
+            "format": "int32",
+            "required": true
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "description": "Page",
+            "type": "integer",
+            "format": "int32",
+            "default": 1,
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns project reports generated by the user.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/OpenAPI_V1_Entities_ProjectReport"
+              }
+            }
+          }
+        },
+        "tags": [
+          "projects"
+        ],
+        "operationId": "getOpenapiProjectsIdReports"
+      }
+    },
+    "/openapi/projects/{id}/layers": {
+      "get": {
+        "summary": "Responds with project layers",
+        "description": "User role should have at least \"View\" access permission in \"Area Plan\".",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "description": "Access token",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "header",
+            "name": "Accept-Version",
+            "description": "API version",
+            "type": "string",
+            "required": false
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "type": "integer",
+            "format": "int32",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Responds with project layers",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/OpenAPI_V1_Entities_Layer"
+              }
+            }
+          }
+        },
+        "tags": [
+          "projects"
+        ],
+        "operationId": "getOpenapiProjectsIdLayers"
+      }
+    },
+    "/openapi/projects/{id}/items": {
+      "post": {
+        "summary": "Batch create/update/remove project item via Revit",
+        "description": "Only values of columns user has access to are returned. User role should have at least \"Edit\" access permission in \"Dashboard and Recycle Bin\".",
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "description": "Access token",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "header",
+            "name": "Accept-Version",
+            "description": "API version",
+            "type": "string",
+            "required": false
+          },
+          {
+            "in": "formData",
+            "name": "areas[][area_id]",
+            "description": "Area Id",
+            "type": "array",
+            "required": true,
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "in": "formData",
+            "name": "areas[][items][][revit_id]",
+            "description": "Revit ID",
+            "type": "array",
+            "required": true,
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "formData",
+            "name": "areas[][items][][division_id]",
+            "description": "Category ID",
+            "type": "array",
+            "required": true,
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "in": "formData",
+            "name": "areas[][items][][quantity]",
+            "description": "Quantity",
+            "type": "array",
+            "required": true,
+            "items": {
+              "type": "number",
+              "format": "float"
+            }
+          },
+          {
+            "in": "formData",
+            "name": "areas[][items][][columns][][key]",
+            "description": "Column Key",
+            "type": "array",
+            "required": true,
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "formData",
+            "name": "areas[][items][][columns][][value]",
+            "description": "Column Value",
+            "type": "array",
+            "required": true,
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "formData",
+            "name": "settings",
+            "description": "Settings",
+            "type": "json",
+            "required": false
+          },
+          {
+            "in": "formData",
+            "name": "settings[search_column_keys][]",
+            "description": "Search Column Keys",
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "required": true
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "type": "integer",
+            "format": "int32",
+            "required": true
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Batch create/update/remove project item via Revit",
+            "schema": {
+              "$ref": "#/definitions/OpenAPI_V1_Entities_ProjectItemsAndProjectFaildItems"
+            }
+          }
+        },
+        "tags": [
+          "projects"
+        ],
+        "operationId": "postOpenapiProjectsIdItems"
+      },
+      "get": {
+        "summary": "Responds with project items",
+        "description": "Only values of columns user has access to are returned. User role should have at least \"View\" access permission in \"Dashboard and Recycle Bin\". The list is limited to 25 items and can be navigated with the help of \"page\" parameter.",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "description": "Access token",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "header",
+            "name": "Accept-Version",
+            "description": "API version",
+            "type": "string",
+            "required": false
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "description": "Project ID",
+            "type": "integer",
+            "format": "int32",
+            "required": true
+          },
+          {
+            "in": "query",
+            "name": "division_id",
+            "description": "Category ID",
+            "type": "integer",
+            "format": "int32",
+            "required": false
+          },
+          {
+            "in": "query",
+            "name": "template_id",
+            "description": "Template ID",
+            "type": "integer",
+            "format": "int32",
+            "required": false
+          },
+          {
+            "in": "query",
+            "name": "updated_since",
+            "description": "Updated since",
+            "type": "string",
+            "format": "date-time",
+            "required": false
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "description": "Page",
+            "type": "integer",
+            "format": "int32",
+            "default": 1,
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Responds with project items",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/OpenAPI_V1_Entities_ProjectItem"
+              }
+            }
+          }
+        },
+        "tags": [
+          "projects"
+        ],
+        "operationId": "getOpenapiProjectsIdItems"
+      }
+    },
+    "/openapi/projects/{id}/areas/batch": {
+      "post": {
+        "summary": "Batch create areas",
+        "description": "User role should have at least \"Edit\" access permission in \"Area Plans\".",
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "description": "Access token",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "header",
+            "name": "Accept-Version",
+            "description": "API version",
+            "type": "string",
+            "required": false
+          },
+          {
+            "in": "formData",
+            "name": "areas[][name]",
+            "description": "Area Name",
+            "type": "array",
+            "required": true,
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "formData",
+            "name": "areas[][layer_id]",
+            "description": "Layer Id",
+            "type": "array",
+            "required": true,
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "in": "formData",
+            "name": "areas[][quantity]",
+            "description": "QTY",
+            "type": "array",
+            "required": false,
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "in": "formData",
+            "name": "areas[][code]",
+            "description": "Code",
+            "type": "array",
+            "required": false,
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "formData",
+            "name": "areas[][parent_ids][]",
+            "description": "Parent area id",
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "required": false
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "type": "integer",
+            "format": "int32",
+            "required": true
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Batch create areas",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/OpenAPI_V1_Entities_Area"
+              }
+            }
+          }
+        },
+        "tags": [
+          "projects"
+        ],
+        "operationId": "postOpenapiProjectsIdAreasBatch"
+      }
+    },
+    "/openapi/projects/{id}/areas": {
+      "delete": {
+        "description": "Delete all unused areas in layer",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "layer_id",
+            "description": "Layer Id",
+            "type": "integer",
+            "format": "int32",
+            "required": true
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "type": "integer",
+            "format": "int32",
+            "required": true
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Delete all unused areas in layer"
+          }
+        },
+        "tags": [
+          "projects"
+        ],
+        "operationId": "deleteOpenapiProjectsIdAreas"
+      },
+      "post": {
+        "summary": "Create new area",
+        "description": "User role should have at least \"Edit\" access permission in \"Area Plans\".",
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "description": "Access token",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "header",
+            "name": "Accept-Version",
+            "description": "API version",
+            "type": "string",
+            "required": false
+          },
+          {
+            "in": "formData",
+            "name": "name",
+            "description": "Area Name",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "formData",
+            "name": "layer_id",
+            "description": "Layer Id",
+            "type": "integer",
+            "format": "int32",
+            "required": true
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "type": "integer",
+            "format": "int32",
+            "required": true
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Create new area",
+            "schema": {
+              "$ref": "#/definitions/OpenAPI_V1_Entities_Area"
+            }
+          }
+        },
+        "tags": [
+          "projects"
+        ],
+        "operationId": "postOpenapiProjectsIdAreas"
+      },
+      "get": {
+        "summary": "Responds with project areas",
+        "description": "User role should have at least \"View\" access permission in \"Area Plan\".",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "description": "Access token",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "header",
+            "name": "Accept-Version",
+            "description": "API version",
+            "type": "string",
+            "required": false
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "type": "integer",
+            "format": "int32",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Responds with project areas",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/OpenAPI_V1_Entities_Area"
+              }
+            }
+          }
+        },
+        "tags": [
+          "projects"
+        ],
+        "operationId": "getOpenapiProjectsIdAreas"
+      }
+    },
+    "/openapi/projects/{id}": {
+      "delete": {
+        "description": "Delete a project",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "description": "Access token",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "header",
+            "name": "Accept-Version",
+            "description": "API version",
+            "type": "string",
+            "required": false
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "type": "integer",
+            "format": "int32",
+            "required": true
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Delete a project"
+          }
+        },
+        "tags": [
+          "projects"
+        ],
+        "operationId": "deleteOpenapiProjectsId"
+      },
+      "put": {
+        "summary": "Updates the project",
+        "description": "User must have permission to update projects",
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "description": "Access token",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "header",
+            "name": "Accept-Version",
+            "description": "API version",
+            "type": "string",
+            "required": false
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "description": "The ID of the project to update",
+            "type": "integer",
+            "format": "int32",
+            "required": true
+          },
+          {
+            "in": "formData",
+            "name": "name",
+            "description": "The new name of the project",
+            "type": "string",
+            "required": false
+          },
+          {
+            "in": "formData",
+            "name": "code",
+            "description": "The new code/number of the project",
+            "type": "string",
+            "required": false
+          },
+          {
+            "in": "formData",
+            "name": "client_id",
+            "description": "The contact ID of a client",
+            "type": "integer",
+            "format": "int32",
+            "required": false
+          },
+          {
+            "in": "formData",
+            "name": "billing_client_id",
+            "description": "The contact ID of a billing client",
+            "type": "integer",
+            "format": "int32",
+            "required": false
+          },
+          {
+            "in": "formData",
+            "name": "category_ids[]",
+            "description": "The categories available in the project",
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "required": false
+          },
+          {
+            "in": "formData",
+            "name": "project_users[][user_id]",
+            "type": "array",
+            "required": true,
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "in": "formData",
+            "name": "project_users[][access]",
+            "type": "array",
+            "required": true,
+            "items": {
+              "type": "string",
+              "enum": [
+                "admin",
+                "edit",
+                "view"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Updates the project",
+            "schema": {
+              "$ref": "#/definitions/OpenAPI_V1_Entities_Project"
+            }
+          }
+        },
+        "tags": [
+          "projects"
+        ],
+        "operationId": "putOpenapiProjectsId"
+      },
+      "get": {
+        "summary": "Returns information about the project",
+        "description": "User role should have at least \"View\" access permission in \"Dashboard and Recycle Bin\".",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "description": "Access token",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "header",
+            "name": "Accept-Version",
+            "description": "API version",
+            "type": "string",
+            "required": false
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "description": "Project ID",
+            "type": "integer",
+            "format": "int32",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns information about the project",
+            "schema": {
+              "$ref": "#/definitions/OpenAPI_V1_Entities_Project"
+            }
+          }
+        },
+        "tags": [
+          "projects"
+        ],
+        "operationId": "getOpenapiProjectsId"
+      }
+    },
+    "/openapi/divisions": {
+      "get": {
+        "summary": "Returns a list of categories for the team.",
+        "description": "User role should have at least \"View\" access permission in \"Template Configuration.\"",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "description": "Access token",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "header",
+            "name": "Accept-Version",
+            "description": "API version",
+            "type": "string",
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns a list of categories for the team.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/OpenAPI_V1_Entities_Category"
+              }
+            }
+          }
+        },
+        "tags": [
+          "divisions"
+        ],
+        "operationId": "getOpenapiDivisions"
+      }
+    },
+    "/openapi/divisions/project/{project_id}": {
+      "get": {
+        "summary": "Returns a list of columns of the project user has access to.",
+        "description": "User role should have at least \"View\" access permission in \"Dashboard and Recycle Bin\".",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "description": "Access token",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "header",
+            "name": "Accept-Version",
+            "description": "API version",
+            "type": "string",
+            "required": false
+          },
+          {
+            "in": "path",
+            "name": "project_id",
+            "description": "Project ID",
+            "type": "integer",
+            "format": "int32",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns a list of columns of the project user has access to.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/OpenAPI_V1_Entities_Category"
+              }
+            }
+          }
+        },
+        "tags": [
+          "divisions"
+        ],
+        "operationId": "getOpenapiDivisionsProjectProjectId"
+      }
+    },
+    "/openapi/columns": {
+      "get": {
+        "summary": "Returns a list of columns for the team.",
+        "description": "User role should have at least \"View\" access permission in \"Template Configuration\".",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "description": "Access token",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "header",
+            "name": "Accept-Version",
+            "description": "API version",
+            "type": "string",
+            "required": false
+          },
+          {
+            "in": "query",
+            "name": "property",
+            "type": "string",
+            "enum": [
+              "project",
+              "product",
+              "pricing"
+            ],
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns a list of columns for the team.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/OpenAPI_V1_Entities_Column"
+              }
+            }
+          }
+        },
+        "tags": [
+          "columns"
+        ],
+        "operationId": "getOpenapiColumns"
+      }
+    },
+    "/openapi/columns/project/{project_id}": {
+      "get": {
+        "summary": "Returns a list of columns of the project user has access to.",
+        "description": "User role should have at least \"View\" access permission in \"Dashboard” and “Recycle Bin.\"",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "description": "Access token",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "header",
+            "name": "Accept-Version",
+            "description": "API version",
+            "type": "string",
+            "required": false
+          },
+          {
+            "in": "path",
+            "name": "project_id",
+            "description": "Project ID",
+            "type": "integer",
+            "format": "int32",
+            "required": true
+          },
+          {
+            "in": "query",
+            "name": "property",
+            "type": "string",
+            "enum": [
+              "project",
+              "product",
+              "pricing"
+            ],
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns a list of columns of the project user has access to.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/OpenAPI_V1_Entities_Column"
+              }
+            }
+          }
+        },
+        "tags": [
+          "columns"
+        ],
+        "operationId": "getOpenapiColumnsProjectProjectId"
+      }
+    },
+    "/openapi/columns/division/{division_id}": {
+      "get": {
+        "summary": "Returns a list of columns of category the user has access to.",
+        "description": "User role should have at least \"View\" access permission in \"Template Configuration\" or \"Dashboard and Recycle Bin.\"",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "description": "Access token",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "header",
+            "name": "Accept-Version",
+            "description": "API version",
+            "type": "string",
+            "required": false
+          },
+          {
+            "in": "path",
+            "name": "division_id",
+            "description": "Category ID",
+            "type": "integer",
+            "format": "int32",
+            "required": true
+          },
+          {
+            "in": "query",
+            "name": "property",
+            "type": "string",
+            "enum": [
+              "project",
+              "product",
+              "pricing"
+            ],
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns a list of columns of category the user has access to.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/OpenAPI_V1_Entities_Column"
+              }
+            }
+          }
+        },
+        "tags": [
+          "columns"
+        ],
+        "operationId": "getOpenapiColumnsDivisionDivisionId"
+      }
+    },
+    "/openapi/contacts": {
+      "post": {
+        "summary": "Create Company and Contacts",
+        "description": "    $ cat data.json\n    {\n      \"id\": null,\n      \"category_type\": \"client_category\", // or \"vendor_category\"\n      \"new_data\": {\n        \"company_details\": {\n          \"value\": {\n            \"company_name\": \"iPear\",\n            \"email\": \"ipear@example.com\",\n            \"website\": \"example.com\",\n            \"language\": \"1\",\n            \"user_name\": \"Dim Hook\",\n            \"password\": \"SeCR34\"\n          }\n        },\n        \"address\": {\n          \"value\": [\n            {\n              \"id\": null,\n              \"name\": \"South Office\",\n              \"phone\": \"+1234567890\",\n              \"address_line_1\": \"Hills\",\n              \"address_line_2\": \"23\",\n              \"country\": null,\n              \"state\": \"California\",\n              \"city\": \"San\",\n              \"post_code\": \"1111111\",\n              \"contacts\": {\n                \"value\": [\n                  {\n                    \"name\": \"John Doe\",\n                    \"phone\": \"+123456789\",\n                    \"position\": \"Highlifter\",\n                    \"email\": \"john@example.com\",\n                    \"note\": \"Cool\"\n                  },\n                  {\n                    \"name\": \"Jane Doe\",\n                    \"phone\": \"+123456789\",\n                    \"position\": \"CEO\",\n                    \"email\": \"jane@example.com\"\n                  }\n                ]\n              }\n            }\n          ]\n        }\n      }\n    }\n\n    $ AUTHORIZATION=\"S3CR34\" # TODO: your personal token\n\n    $ curl \\\n    --request POST \\\n    --header \"Content-Type: application/json\" \\\n    --header \"Accept: application/json\" \\\n    --header \"Authorization: $AUTHORIZATION\" \\\n    --data \"@data.json\" \\\n    https://app.fohlio.com/openapi/contacts\n",
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "description": "Access token",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "header",
+            "name": "Accept-Version",
+            "description": "API version",
+            "type": "string",
+            "required": false
+          },
+          {
+            "in": "formData",
+            "name": "id",
+            "description": "ID",
+            "type": "string",
+            "required": false
+          },
+          {
+            "in": "formData",
+            "name": "category_type",
+            "description": "Category Type",
+            "type": "string",
+            "enum": [
+              "client_category",
+              "collaborator_category",
+              "general_contractor_category",
+              "manufacture_category",
+              "project_manager_category",
+              "purchasing_agent_category",
+              "subcontractor_category",
+              "supplier_category",
+              "vendor_category",
+              "warehouse_category"
+            ],
+            "required": true
+          },
+          {
+            "in": "formData",
+            "name": "new_data[company_details][value][company_name]",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "formData",
+            "name": "new_data[company_details][value][email]",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "formData",
+            "name": "new_data[company_details][value][website]",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "formData",
+            "name": "new_data[company_details][value][language]",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "formData",
+            "name": "new_data[company_details][value][user_name]",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "formData",
+            "name": "new_data[company_details][value][password]",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "formData",
+            "name": "new_data[address][value][][id]",
+            "type": "array",
+            "required": false,
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "formData",
+            "name": "new_data[address][value][][name]",
+            "type": "array",
+            "required": true,
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "formData",
+            "name": "new_data[address][value][][phone]",
+            "type": "array",
+            "required": true,
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "formData",
+            "name": "new_data[address][value][][address_line_1]",
+            "type": "array",
+            "required": true,
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "formData",
+            "name": "new_data[address][value][][address_line_2]",
+            "type": "array",
+            "required": true,
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "formData",
+            "name": "new_data[address][value][][country]",
+            "type": "array",
+            "required": true,
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "formData",
+            "name": "new_data[address][value][][state]",
+            "type": "array",
+            "required": true,
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "formData",
+            "name": "new_data[address][value][][city]",
+            "type": "array",
+            "required": true,
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "formData",
+            "name": "new_data[address][value][][post_code]",
+            "type": "array",
+            "required": true,
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "formData",
+            "name": "new_data[address][value][][contacts][value][][id]",
+            "type": "array",
+            "required": false,
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "formData",
+            "name": "new_data[address][value][][contacts][value][][name]",
+            "type": "array",
+            "required": true,
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "formData",
+            "name": "new_data[address][value][][contacts][value][][email]",
+            "type": "array",
+            "required": false,
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "formData",
+            "name": "new_data[address][value][][contacts][value][][phone]",
+            "type": "array",
+            "required": false,
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "formData",
+            "name": "new_data[address][value][][contacts][value][][position]",
+            "type": "array",
+            "required": false,
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "formData",
+            "name": "new_data[address][value][][contacts][value][][note]",
+            "type": "array",
+            "required": false,
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "formData",
+            "name": "new_data[account][value][currency]",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "formData",
+            "name": "new_data[account][value][account_number]",
+            "type": "string",
+            "required": false
+          },
+          {
+            "in": "formData",
+            "name": "new_data[account][value][credit_limit]",
+            "type": "string",
+            "required": false
+          },
+          {
+            "in": "formData",
+            "name": "new_data[account][value][lead_time]",
+            "type": "string",
+            "required": false
+          },
+          {
+            "in": "formData",
+            "name": "new_data[account][value][registration_number]",
+            "type": "string",
+            "required": false
+          },
+          {
+            "in": "formData",
+            "name": "new_data[account][value][terms]",
+            "type": "string",
+            "required": false
+          },
+          {
+            "in": "formData",
+            "name": "new_data[account][value][vat]",
+            "type": "string",
+            "required": false
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Create Company and Contacts"
+          }
+        },
+        "tags": [
+          "contacts"
+        ],
+        "operationId": "postOpenapiContacts"
+      },
+      "get": {
+        "description": "Returns a list of contacts",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "description": "Access token",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "header",
+            "name": "Accept-Version",
+            "description": "API version",
+            "type": "string",
+            "required": false
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "description": "Page Number",
+            "type": "integer",
+            "format": "int32",
+            "default": 1,
+            "required": false
+          },
+          {
+            "in": "query",
+            "name": "per_page",
+            "description": "Page Size",
+            "type": "integer",
+            "format": "int32",
+            "default": 25,
+            "required": false
+          },
+          {
+            "in": "formData",
+            "name": "category_types[]",
+            "description": "Contact Category Type",
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "client",
+                "collaborator",
+                "general_contractor",
+                "manufacture",
+                "project_manager",
+                "purchasing_agent",
+                "subcontractor",
+                "supplier",
+                "warehouse"
+              ]
+            },
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns a list of contacts",
+            "schema": {
+              "$ref": "#/definitions/OpenAPI_V1_Entities_Contacts_Contact"
+            }
+          }
+        },
+        "tags": [
+          "contacts"
+        ],
+        "operationId": "getOpenapiContacts"
+      }
+    },
+    "/openapi/contacts/{id}": {
+      "delete": {
+        "description": "Delete a contact",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "description": "Access token",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "header",
+            "name": "Accept-Version",
+            "description": "API version",
+            "type": "string",
+            "required": false
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "description": "Contact ID",
+            "type": "integer",
+            "format": "int32",
+            "required": true
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Delete a contact"
+          }
+        },
+        "tags": [
+          "contacts"
+        ],
+        "operationId": "deleteOpenapiContactsId"
+      },
+      "put": {
+        "description": "Update a contact",
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "description": "Access token",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "header",
+            "name": "Accept-Version",
+            "description": "API version",
+            "type": "string",
+            "required": false
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "type": "integer",
+            "format": "int32",
+            "required": true
+          },
+          {
+            "in": "formData",
+            "name": "category_type",
+            "description": "Category Type",
+            "type": "string",
+            "enum": [
+              "client_category",
+              "collaborator_category",
+              "general_contractor_category",
+              "manufacture_category",
+              "project_manager_category",
+              "purchasing_agent_category",
+              "subcontractor_category",
+              "supplier_category",
+              "vendor_category",
+              "warehouse_category"
+            ],
+            "required": false
+          },
+          {
+            "in": "formData",
+            "name": "new_data[company_details][value][company_name]",
+            "type": "string",
+            "required": false
+          },
+          {
+            "in": "formData",
+            "name": "new_data[company_details][value][email]",
+            "type": "string",
+            "required": false
+          },
+          {
+            "in": "formData",
+            "name": "new_data[company_details][value][website]",
+            "type": "string",
+            "required": false
+          },
+          {
+            "in": "formData",
+            "name": "new_data[company_details][value][language]",
+            "type": "string",
+            "required": false
+          },
+          {
+            "in": "formData",
+            "name": "new_data[company_details][value][user_name]",
+            "type": "string",
+            "required": false
+          },
+          {
+            "in": "formData",
+            "name": "new_data[company_details][value][password]",
+            "type": "string",
+            "required": false
+          },
+          {
+            "in": "formData",
+            "name": "new_data[address][value][][id]",
+            "type": "array",
+            "required": false,
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "in": "formData",
+            "name": "new_data[address][value][][name]",
+            "type": "array",
+            "required": false,
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "formData",
+            "name": "new_data[address][value][][phone]",
+            "type": "array",
+            "required": false,
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "formData",
+            "name": "new_data[address][value][][address_line_1]",
+            "type": "array",
+            "required": false,
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "formData",
+            "name": "new_data[address][value][][address_line_2]",
+            "type": "array",
+            "required": false,
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "formData",
+            "name": "new_data[address][value][][country]",
+            "type": "array",
+            "required": false,
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "formData",
+            "name": "new_data[address][value][][state]",
+            "type": "array",
+            "required": false,
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "formData",
+            "name": "new_data[address][value][][city]",
+            "type": "array",
+            "required": false,
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "formData",
+            "name": "new_data[address][value][][post_code]",
+            "type": "array",
+            "required": false,
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "formData",
+            "name": "new_data[address][value][][contacts][value][][id]",
+            "type": "array",
+            "required": false,
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "formData",
+            "name": "new_data[address][value][][contacts][value][][name]",
+            "type": "array",
+            "required": false,
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "formData",
+            "name": "new_data[address][value][][contacts][value][][email]",
+            "type": "array",
+            "required": false,
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "formData",
+            "name": "new_data[address][value][][contacts][value][][phone]",
+            "type": "array",
+            "required": false,
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "formData",
+            "name": "new_data[address][value][][contacts][value][][position]",
+            "type": "array",
+            "required": false,
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "formData",
+            "name": "new_data[address][value][][contacts][value][][note]",
+            "type": "array",
+            "required": false,
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "formData",
+            "name": "new_data[account][value][currency]",
+            "type": "string",
+            "required": false
+          },
+          {
+            "in": "formData",
+            "name": "new_data[account][value][account_number]",
+            "type": "string",
+            "required": false
+          },
+          {
+            "in": "formData",
+            "name": "new_data[account][value][credit_limit]",
+            "type": "string",
+            "required": false
+          },
+          {
+            "in": "formData",
+            "name": "new_data[account][value][lead_time]",
+            "type": "string",
+            "required": false
+          },
+          {
+            "in": "formData",
+            "name": "new_data[account][value][registration_number]",
+            "type": "string",
+            "required": false
+          },
+          {
+            "in": "formData",
+            "name": "new_data[account][value][terms]",
+            "type": "string",
+            "required": false
+          },
+          {
+            "in": "formData",
+            "name": "new_data[account][value][vat]",
+            "type": "string",
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Update a contact",
+            "schema": {
+              "$ref": "#/definitions/OpenAPI_V1_Entities_Contacts_Contact"
+            }
+          }
+        },
+        "tags": [
+          "contacts"
+        ],
+        "operationId": "putOpenapiContactsId"
+      },
+      "get": {
+        "summary": "Get Contact by ID",
+        "description": "    $ AUTHORIZATION=\"S3CR34\" # TODO: your personal token\n\n    $ curl \\\n    --request GET \\\n    --header \"Content-Type: application/json\" \\\n    --header \"Accept: application/json\" \\\n    --header \"Authorization: $AUTHORIZATION\" \\\n    https://app.fohlio.com/openapi/contacts/147424\n",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "description": "Access token",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "header",
+            "name": "Accept-Version",
+            "description": "API version",
+            "type": "string",
+            "required": false
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "type": "integer",
+            "format": "int32",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Get Contact by ID",
+            "schema": {
+              "$ref": "#/definitions/OpenAPI_V1_Entities_Contacts_Contact"
+            }
+          }
+        },
+        "tags": [
+          "contacts"
+        ],
+        "operationId": "getOpenapiContactsId"
+      }
+    },
+    "/openapi/templates": {
+      "get": {
+        "summary": "Returns a list of templates for team.",
+        "description": "User role should have at least \"View\" access permission in \"Template Configuration\" or \"Dashboard and Recycle Bin\".",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "description": "Access token",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "header",
+            "name": "Accept-Version",
+            "description": "API version",
+            "type": "string",
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns a list of templates for team.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/OpenAPI_V1_Entities_Template"
+              }
+            }
+          }
+        },
+        "tags": [
+          "templates"
+        ],
+        "operationId": "getOpenapiTemplates"
+      }
+    },
+    "/openapi/templates/project/{project_id}": {
+      "get": {
+        "summary": "Returns a list of templates for project user has access to.",
+        "description": "This method can be useful for external projects. User role should have at least \"View\" access permission in \"Dashboard and Recycle Bin\".",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "description": "Access token",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "header",
+            "name": "Accept-Version",
+            "description": "API version",
+            "type": "string",
+            "required": false
+          },
+          {
+            "in": "path",
+            "name": "project_id",
+            "description": "Project ID",
+            "type": "integer",
+            "format": "int32",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns a list of templates for project user has access to.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/OpenAPI_V1_Entities_Template"
+              }
+            }
+          }
+        },
+        "tags": [
+          "templates"
+        ],
+        "operationId": "getOpenapiTemplatesProjectProjectId"
+      }
+    },
+    "/openapi/users": {
+      "get": {
+        "summary": "Returns a list of users in the team",
+        "description": "User role should have at least \"View\" access permission in \"Role Management\".",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "description": "Access token",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "header",
+            "name": "Accept-Version",
+            "description": "API version",
+            "type": "string",
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns a list of users in the team",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/OpenAPI_V1_Entities_User"
+              }
+            }
+          }
+        },
+        "tags": [
+          "users"
+        ],
+        "operationId": "getOpenapiUsers"
+      }
+    },
+    "/openapi/roles": {
+      "get": {
+        "summary": "Returns a list of roles in the team.",
+        "description": "User role should have at least \"View\" access permission in \"Role Management\".",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "description": "Access token",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "header",
+            "name": "Accept-Version",
+            "description": "API version",
+            "type": "string",
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns a list of roles in the team.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/OpenAPI_V1_Entities_Role"
+              }
+            }
+          }
+        },
+        "tags": [
+          "roles"
+        ],
+        "operationId": "getOpenapiRoles"
+      }
+    },
+    "/openapi/client_proposals": {
+      "get": {
+        "description": "Returns a list of team client proposals",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "description": "Access token",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "header",
+            "name": "Accept-Version",
+            "description": "API version",
+            "type": "string",
+            "required": false
+          },
+          {
+            "in": "query",
+            "name": "project_id",
+            "description": "Project ID",
+            "type": "integer",
+            "format": "int32",
+            "required": false
+          },
+          {
+            "in": "query",
+            "name": "schedule_id",
+            "description": "Schedule ID",
+            "type": "integer",
+            "format": "int32",
+            "required": false
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "description": "Page Number",
+            "type": "integer",
+            "format": "int32",
+            "required": false
+          },
+          {
+            "in": "query",
+            "name": "per_page",
+            "description": "Page Size",
+            "type": "integer",
+            "format": "int32",
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns a list of team client proposals",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/OpenAPI_V1_Entities_ClientProposal"
+              }
+            }
+          }
+        },
+        "tags": [
+          "client_proposals"
+        ],
+        "operationId": "getOpenapiClientProposals"
+      }
+    },
+    "/openapi/client_proposals/{id}": {
+      "get": {
+        "description": "Returns purchase order object",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "description": "Access token",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "header",
+            "name": "Accept-Version",
+            "description": "API version",
+            "type": "string",
+            "required": false
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "description": "Purchase Order ID",
+            "type": "integer",
+            "format": "int32",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns purchase order object",
+            "schema": {
+              "$ref": "#/definitions/OpenAPI_V1_Entities_ClientProposal"
+            }
+          }
+        },
+        "tags": [
+          "client_proposals"
+        ],
+        "operationId": "getOpenapiClientProposalsId"
+      }
+    },
+    "/openapi/client_invoices": {
+      "get": {
+        "description": "Returns a list of team client invoices",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "description": "Access token",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "header",
+            "name": "Accept-Version",
+            "description": "API version",
+            "type": "string",
+            "required": false
+          },
+          {
+            "in": "query",
+            "name": "project_id",
+            "description": "Project ID",
+            "type": "integer",
+            "format": "int32",
+            "required": false
+          },
+          {
+            "in": "query",
+            "name": "schedule_id",
+            "description": "Schedule ID",
+            "type": "integer",
+            "format": "int32",
+            "required": false
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "description": "Page Number",
+            "type": "integer",
+            "format": "int32",
+            "default": 1,
+            "required": false
+          },
+          {
+            "in": "query",
+            "name": "per_page",
+            "description": "Page Size",
+            "type": "integer",
+            "format": "int32",
+            "default": 25,
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns a list of team client invoices",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/OpenAPI_V1_Entities_Invoice"
+              }
+            }
+          }
+        },
+        "tags": [
+          "client_invoices"
+        ],
+        "operationId": "getOpenapiClientInvoices"
+      }
+    },
+    "/openapi/client_invoices/{id}": {
+      "get": {
+        "description": "Returns purchase order object",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "description": "Access token",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "header",
+            "name": "Accept-Version",
+            "description": "API version",
+            "type": "string",
+            "required": false
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "description": "Purchase Order ID",
+            "type": "integer",
+            "format": "int32",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns purchase order object",
+            "schema": {
+              "$ref": "#/definitions/OpenAPI_V1_Entities_Invoice"
+            }
+          }
+        },
+        "tags": [
+          "client_invoices"
+        ],
+        "operationId": "getOpenapiClientInvoicesId"
+      }
+    },
+    "/openapi/purchase_orders": {
+      "post": {
+        "summary": "Creates a new purchase order",
+        "description": "User must have permission to create purchase orders",
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "description": "Access token",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "header",
+            "name": "Accept-Version",
+            "description": "API version",
+            "type": "string",
+            "required": false
+          },
+          {
+            "in": "formData",
+            "name": "project_id",
+            "description": "Project ID",
+            "type": "integer",
+            "format": "int32",
+            "required": true
+          },
+          {
+            "in": "formData",
+            "name": "items[][project_model_id]",
+            "description": "The ID of an item in the project",
+            "type": "array",
+            "required": true,
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "in": "formData",
+            "name": "items[][name]",
+            "description": "Line item name",
+            "type": "array",
+            "required": false,
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "formData",
+            "name": "items[][description]",
+            "description": "Line item description",
+            "type": "array",
+            "required": false,
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "formData",
+            "name": "items[][unit_type]",
+            "description": "Unit of measure of a line item",
+            "type": "array",
+            "required": false,
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "formData",
+            "name": "items[][quantity]",
+            "description": "The quantity of a line item",
+            "type": "array",
+            "required": false,
+            "items": {
+              "type": "number",
+              "format": "float"
+            }
+          },
+          {
+            "in": "formData",
+            "name": "items[][price]",
+            "description": "The price of a line item",
+            "type": "array",
+            "required": false,
+            "items": {
+              "type": "number",
+              "format": "float"
+            }
+          },
+          {
+            "in": "formData",
+            "name": "items[][taxable]",
+            "description": "Whether or not a line item is taxable",
+            "type": "array",
+            "required": false,
+            "items": {
+              "type": "boolean"
+            }
+          },
+          {
+            "in": "formData",
+            "name": "label",
+            "description": "PO number",
+            "type": "string",
+            "required": false
+          },
+          {
+            "in": "formData",
+            "name": "vendor_id",
+            "description": "The contact ID of a supplier",
+            "type": "integer",
+            "format": "int32",
+            "required": false
+          },
+          {
+            "in": "formData",
+            "name": "shipping_client_id",
+            "description": "The contact ID of a recipient",
+            "type": "integer",
+            "format": "int32",
+            "required": false
+          },
+          {
+            "in": "formData",
+            "name": "billing_client_id",
+            "description": "The contact ID of a payer",
+            "type": "integer",
+            "format": "int32",
+            "required": false
+          },
+          {
+            "in": "formData",
+            "name": "document_template_id",
+            "description": "PO document template ID",
+            "type": "integer",
+            "format": "int32",
+            "required": false
+          },
+          {
+            "in": "formData",
+            "name": "notes",
+            "description": "Notes",
+            "type": "string",
+            "required": false
+          },
+          {
+            "in": "formData",
+            "name": "shipping_cost",
+            "description": "Shipping / Freight cost",
+            "type": "number",
+            "format": "float",
+            "required": false
+          },
+          {
+            "in": "formData",
+            "name": "packing_cost",
+            "description": "Packing cost",
+            "type": "number",
+            "format": "float",
+            "required": false
+          },
+          {
+            "in": "formData",
+            "name": "duties_cost",
+            "description": "Customs and duties cost",
+            "type": "number",
+            "format": "float",
+            "required": false
+          },
+          {
+            "in": "formData",
+            "name": "install_cost",
+            "description": "Installation cost",
+            "type": "number",
+            "format": "float",
+            "required": false
+          },
+          {
+            "in": "formData",
+            "name": "sales_tax",
+            "description": "Sales tax",
+            "type": "number",
+            "format": "float",
+            "required": false
+          },
+          {
+            "in": "formData",
+            "name": "other_cost",
+            "description": "Other costs",
+            "type": "number",
+            "format": "float",
+            "required": false
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Creates a new purchase order",
+            "schema": {
+              "$ref": "#/definitions/OpenAPI_V1_Entities_PurchaseOrder"
+            }
+          }
+        },
+        "tags": [
+          "purchase_orders"
+        ],
+        "operationId": "postOpenapiPurchaseOrders"
+      },
+      "get": {
+        "description": "Returns a list of team purchase orders",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "description": "Access token",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "header",
+            "name": "Accept-Version",
+            "description": "API version",
+            "type": "string",
+            "required": false
+          },
+          {
+            "in": "query",
+            "name": "project_id",
+            "description": "Project ID",
+            "type": "integer",
+            "format": "int32",
+            "required": false
+          },
+          {
+            "in": "query",
+            "name": "schedule_id",
+            "description": "Schedule ID",
+            "type": "integer",
+            "format": "int32",
+            "required": false
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "description": "Page Number",
+            "type": "integer",
+            "format": "int32",
+            "required": false
+          },
+          {
+            "in": "query",
+            "name": "per_page",
+            "description": "Page Size",
+            "type": "integer",
+            "format": "int32",
+            "required": false
+          },
+          {
+            "in": "query",
+            "name": "since",
+            "description": "Last updated time",
+            "type": "integer",
+            "format": "int32",
+            "required": false
+          },
+          {
+            "in": "query",
+            "name": "since_updated_at_date",
+            "description": "Last updated time",
+            "type": "string",
+            "format": "date",
+            "required": false
+          },
+          {
+            "in": "query",
+            "name": "status",
+            "type": "string",
+            "enum": [
+              "draft",
+              "open",
+              "closed",
+              "approved",
+              "rejected",
+              "review"
+            ],
+            "required": false
+          },
+          {
+            "in": "query",
+            "name": "common_status",
+            "type": "string",
+            "enum": [
+              "draft",
+              "review",
+              "approved",
+              "rejected",
+              "open",
+              "shipment_created",
+              "arrival_expected",
+              "received_partially",
+              "closed"
+            ],
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns a list of team purchase orders",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/OpenAPI_V1_Entities_PurchaseOrder"
+              }
+            }
+          }
+        },
+        "tags": [
+          "purchase_orders"
+        ],
+        "operationId": "getOpenapiPurchaseOrders"
+      }
+    },
+    "/openapi/purchase_orders/{id}": {
+      "delete": {
+        "description": "Delete a purchase order",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "description": "Access token",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "header",
+            "name": "Accept-Version",
+            "description": "API version",
+            "type": "string",
+            "required": false
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "type": "integer",
+            "format": "int32",
+            "required": true
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Delete a purchase order"
+          }
+        },
+        "tags": [
+          "purchase_orders"
+        ],
+        "operationId": "deleteOpenapiPurchaseOrdersId"
+      },
+      "put": {
+        "description": "Updates a purchase order",
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "description": "Access token",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "header",
+            "name": "Accept-Version",
+            "description": "API version",
+            "type": "string",
+            "required": false
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "description": "Purchase order ID",
+            "type": "integer",
+            "format": "int32",
+            "required": true
+          },
+          {
+            "in": "formData",
+            "name": "items[][id]",
+            "description": "The ID of a line item in the purchase order",
+            "type": "array",
+            "required": true,
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "in": "formData",
+            "name": "items[][name]",
+            "description": "Line item name",
+            "type": "array",
+            "required": false,
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "formData",
+            "name": "items[][description]",
+            "description": "Line item description",
+            "type": "array",
+            "required": false,
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "formData",
+            "name": "items[][unit_type]",
+            "description": "Unit of measure of a line item",
+            "type": "array",
+            "required": false,
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "formData",
+            "name": "items[][quantity]",
+            "description": "The quantity of a line item",
+            "type": "array",
+            "required": false,
+            "items": {
+              "type": "number",
+              "format": "float"
+            }
+          },
+          {
+            "in": "formData",
+            "name": "items[][price]",
+            "description": "The price of a line item",
+            "type": "array",
+            "required": false,
+            "items": {
+              "type": "number",
+              "format": "float"
+            }
+          },
+          {
+            "in": "formData",
+            "name": "items[][taxable]",
+            "description": "Whether or not a line item is taxable",
+            "type": "array",
+            "required": false,
+            "items": {
+              "type": "boolean"
+            }
+          },
+          {
+            "in": "formData",
+            "name": "items[][delete]",
+            "description": "Set to true to delete an item",
+            "type": "array",
+            "required": false,
+            "items": {
+              "type": "boolean"
+            }
+          },
+          {
+            "in": "formData",
+            "name": "label",
+            "description": "PO number",
+            "type": "string",
+            "required": false
+          },
+          {
+            "in": "formData",
+            "name": "vendor_id",
+            "description": "The contact ID of a supplier",
+            "type": "integer",
+            "format": "int32",
+            "required": false
+          },
+          {
+            "in": "formData",
+            "name": "shipping_client_id",
+            "description": "The contact ID of a recipient",
+            "type": "integer",
+            "format": "int32",
+            "required": false
+          },
+          {
+            "in": "formData",
+            "name": "billing_client_id",
+            "description": "The contact ID of a payer",
+            "type": "integer",
+            "format": "int32",
+            "required": false
+          },
+          {
+            "in": "formData",
+            "name": "notes",
+            "description": "Notes",
+            "type": "string",
+            "required": false
+          },
+          {
+            "in": "formData",
+            "name": "shipping_cost",
+            "description": "Shipping / Freight cost",
+            "type": "number",
+            "format": "float",
+            "required": false
+          },
+          {
+            "in": "formData",
+            "name": "packing_cost",
+            "description": "Packing cost",
+            "type": "number",
+            "format": "float",
+            "required": false
+          },
+          {
+            "in": "formData",
+            "name": "duties_cost",
+            "description": "Customs and duties cost",
+            "type": "number",
+            "format": "float",
+            "required": false
+          },
+          {
+            "in": "formData",
+            "name": "install_cost",
+            "description": "Installation cost",
+            "type": "number",
+            "format": "float",
+            "required": false
+          },
+          {
+            "in": "formData",
+            "name": "sales_tax",
+            "description": "Sales tax",
+            "type": "number",
+            "format": "float",
+            "required": false
+          },
+          {
+            "in": "formData",
+            "name": "other_cost",
+            "description": "Other costs",
+            "type": "number",
+            "format": "float",
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Updates a purchase order",
+            "schema": {
+              "$ref": "#/definitions/OpenAPI_V1_Entities_PurchaseOrder"
+            }
+          }
+        },
+        "tags": [
+          "purchase_orders"
+        ],
+        "operationId": "putOpenapiPurchaseOrdersId"
+      },
+      "get": {
+        "description": "Returns purchase order object",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "description": "Access token",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "header",
+            "name": "Accept-Version",
+            "description": "API version",
+            "type": "string",
+            "required": false
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "description": "Purchase Order ID",
+            "type": "integer",
+            "format": "int32",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns purchase order object",
+            "schema": {
+              "$ref": "#/definitions/OpenAPI_V1_Entities_PurchaseOrder"
+            }
+          }
+        },
+        "tags": [
+          "purchase_orders"
+        ],
+        "operationId": "getOpenapiPurchaseOrdersId"
+      }
+    },
+    "/openapi/team/dump": {
+      "get": {
+        "description": "Returns a dump of whole team",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "description": "Access token",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "header",
+            "name": "Accept-Version",
+            "description": "API version",
+            "type": "string",
+            "required": false
+          },
+          {
+            "in": "query",
+            "name": "projects",
+            "description": "Include project list",
+            "type": "string",
+            "default": false,
+            "required": false
+          },
+          {
+            "in": "query",
+            "name": "project_items",
+            "description": "Include project items",
+            "type": "string",
+            "default": false,
+            "required": false
+          },
+          {
+            "in": "query",
+            "name": "project_items_columns",
+            "description": "Project models columns",
+            "type": "string",
+            "required": false
+          },
+          {
+            "in": "query",
+            "name": "client_proposals",
+            "description": "Include client proposals",
+            "type": "string",
+            "default": false,
+            "required": false
+          },
+          {
+            "in": "query",
+            "name": "client_invoices",
+            "description": "Include client invoices",
+            "type": "string",
+            "default": false,
+            "required": false
+          },
+          {
+            "in": "query",
+            "name": "purchase_orders",
+            "description": "Include purchase orders",
+            "type": "string",
+            "default": false,
+            "required": false
+          },
+          {
+            "in": "query",
+            "name": "purchase_order_invoices",
+            "description": "Include supplier invoices",
+            "type": "string",
+            "default": false,
+            "required": false
+          },
+          {
+            "in": "query",
+            "name": "purchase_order_shipments",
+            "description": "Include shipments",
+            "type": "string",
+            "default": false,
+            "required": false
+          },
+          {
+            "in": "query",
+            "name": "clients",
+            "description": "Include clients",
+            "type": "string",
+            "default": false,
+            "required": false
+          },
+          {
+            "in": "query",
+            "name": "vendors",
+            "description": "Include vendors",
+            "type": "string",
+            "default": false,
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns a dump of whole team"
+          }
+        },
+        "tags": [
+          "team"
+        ],
+        "operationId": "getOpenapiTeamDump"
+      }
+    }
+  },
+  "definitions": {
+    "OpenAPI_V1_Entities_Token": {
+      "type": "object",
+      "properties": {
+        "value": {
+          "type": "string"
+        }
+      },
+      "description": "OpenAPI_V1_Entities_Token model"
+    },
+    "OpenAPI_V1_Entities_Project": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "name": {
+          "type": "string"
+        },
+        "code": {
+          "type": "string"
+        },
+        "client": {
+          "$ref": "#/definitions/OpenAPI_V1_Entities_Contacts_Contact"
+        },
+        "billing_client": {
+          "$ref": "#/definitions/OpenAPI_V1_Entities_Contacts_Contact"
+        },
+        "categories": {
+          "$ref": "#/definitions/OpenAPI_V1_Entities_Category"
+        },
+        "project_currency": {
+          "$ref": "#/definitions/OpenAPI_V1_Entities_ProjectCurrency"
+        },
+        "project_users": {
+          "$ref": "#/definitions/OpenAPI_V1_Entities_ProjectUser"
+        }
+      },
+      "description": "OpenAPI_V1_Entities_Project model"
+    },
+    "OpenAPI_V1_Entities_Contacts_Contact": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "name": {
+          "type": "string"
+        },
+        "data": {
+          "type": "string"
+        },
+        "addresses": {
+          "$ref": "#/definitions/OpenAPI_V1_Entities_Contacts_Address"
+        },
+        "people": {
+          "$ref": "#/definitions/OpenAPI_V1_Entities_Contacts_Person"
+        },
+        "category": {
+          "$ref": "#/definitions/OpenAPI_V1_Entities_Contacts_Category"
+        }
+      },
+      "description": "OpenAPI_V1_Entities_Contacts_Contact model"
+    },
+    "OpenAPI_V1_Entities_Contacts_Address": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Contact Address ID"
+        },
+        "name": {
+          "type": "string",
+          "description": "Address Alias"
+        },
+        "phone": {
+          "type": "string",
+          "description": "Phone"
+        },
+        "postcode": {
+          "type": "string",
+          "description": "Postcode"
+        },
+        "address_line_1": {
+          "type": "string",
+          "description": "Address Line 1"
+        },
+        "address_line_2": {
+          "type": "string",
+          "description": "Address Line 2"
+        },
+        "city": {
+          "type": "string",
+          "description": "City"
+        },
+        "state": {
+          "type": "string",
+          "description": "State"
+        },
+        "country": {
+          "type": "string",
+          "description": "Country"
+        }
+      }
+    },
+    "OpenAPI_V1_Entities_Contacts_Person": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Contact Person ID"
+        },
+        "name": {
+          "type": "string",
+          "description": "Full Name"
+        },
+        "email": {
+          "type": "string",
+          "description": "Email"
+        },
+        "phone": {
+          "type": "string",
+          "description": "Phone"
+        },
+        "position": {
+          "type": "string",
+          "description": "Job Title"
+        },
+        "note": {
+          "type": "string",
+          "description": "Note"
+        }
+      }
+    },
+    "OpenAPI_V1_Entities_Contacts_Category": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Category ID"
+        },
+        "type": {
+          "type": "string",
+          "description": "Category Type"
+        }
+      }
+    },
+    "OpenAPI_V1_Entities_Category": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "name": {
+          "type": "string"
+        },
+        "code": {
+          "type": "string"
+        },
+        "key": {
+          "type": "string"
+        },
+        "children": {
+          "$ref": "#/definitions/OpenAPI_V1_Entities_Category"
+        }
+      },
+      "description": "OpenAPI_V1_Entities_Category model"
+    },
+    "OpenAPI_V1_Entities_ProjectCurrency": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "string"
+        },
+        "currency": {
+          "$ref": "#/definitions/OpenAPI_V1_Entities_Currency"
+        },
+        "exchange_rates": {
+          "$ref": "#/definitions/OpenAPI_V1_Entities_ExchangeRate"
+        }
+      }
+    },
+    "OpenAPI_V1_Entities_Currency": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "iso_code": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        }
+      }
+    },
+    "OpenAPI_V1_Entities_ExchangeRate": {
+      "type": "object",
+      "properties": {
+        "rate": {
+          "type": "string"
+        },
+        "exchange_currency": {
+          "$ref": "#/definitions/OpenAPI_V1_Entities_Currency"
+        }
+      }
+    },
+    "OpenAPI_V1_Entities_ProjectUser": {
+      "type": "object",
+      "properties": {
+        "access": {
+          "type": "string"
+        },
+        "user_id": {
+          "type": "string"
+        }
+      }
+    },
+    "OpenAPI_V1_Entities_Revit_Mappings": {
+      "type": "object",
+      "properties": {
+        "revit_id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "field_type": {
+          "type": "string"
+        },
+        "revit_name": {
+          "type": "string"
+        },
+        "fohlio_name": {
+          "type": "string"
+        }
+      },
+      "description": "OpenAPI_V1_Entities_Revit_Mappings model"
+    },
+    "OpenAPI_V1_Entities_ProjectReport": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "kind": {
+          "type": "string",
+          "enum": [
+            "pdf",
+            "xlsx"
+          ]
+        },
+        "url": {
+          "type": "string"
+        },
+        "project": {
+          "$ref": "#/definitions/OpenAPI_V1_Entities_Project"
+        },
+        "division": {
+          "$ref": "#/definitions/OpenAPI_V1_Entities_Category"
+        },
+        "user": {
+          "$ref": "#/definitions/OpenAPI_V1_Entities_User"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date"
+        }
+      },
+      "description": "OpenAPI_V1_Entities_ProjectReport model"
+    },
+    "OpenAPI_V1_Entities_User": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "name": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        }
+      },
+      "description": "OpenAPI_V1_Entities_User model"
+    },
+    "OpenAPI_V1_Entities_Layer": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "name": {
+          "type": "string"
+        },
+        "position": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "project_id": {
+          "type": "integer",
+          "format": "int32"
+        }
+      },
+      "description": "OpenAPI_V1_Entities_Layer model"
+    },
+    "OpenAPI_V1_Entities_ProjectItemsAndProjectFaildItems": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "$ref": "#/definitions/OpenAPI_V1_Entities_ProjectItem"
+        },
+        "faild_items": {
+          "$ref": "#/definitions/OpenAPI_V1_Entities_ProjectFaildItem"
+        }
+      },
+      "description": "OpenAPI_V1_Entities_ProjectItemsAndProjectFaildItems model"
+    },
+    "OpenAPI_V1_Entities_ProjectItem": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "project_id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "position": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "state": {
+          "type": "string",
+          "enum": [
+            "active",
+            "removed"
+          ]
+        },
+        "quantity": {
+          "type": "number",
+          "format": "float"
+        },
+        "division": {
+          "$ref": "#/definitions/OpenAPI_V1_Entities_Category"
+        },
+        "vendor_id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "revit_id": {
+          "type": "string"
+        },
+        "column_values": {
+          "$ref": "#/definitions/OpenAPI_V1_Entities_ColumnValue"
+        }
+      },
+      "description": "OpenAPI_V1_Entities_ProjectItem model"
+    },
+    "OpenAPI_V1_Entities_ColumnValue": {
+      "type": "object",
+      "properties": {
+        "column": {
+          "$ref": "#/definitions/OpenAPI_V1_Entities_Column"
+        },
+        "displayed_value": {
+          "type": "string"
+        },
+        "calculated_value": {
+          "type": "string"
+        },
+        "users": {
+          "$ref": "#/definitions/OpenAPI_V1_Entities_User"
+        },
+        "purchase_orders": {
+          "$ref": "#/definitions/OpenAPI_V1_Entities_PurchaseOrder"
+        },
+        "invoices": {
+          "$ref": "#/definitions/OpenAPI_V1_Entities_Invoice"
+        },
+        "images": {
+          "$ref": "#/definitions/OpenAPI_V1_Entities_ColumnValues_Image"
+        },
+        "docs": {
+          "$ref": "#/definitions/OpenAPI_V1_Entities_ColumnValues_Doc"
+        },
+        "supplier": {
+          "$ref": "#/definitions/OpenAPI_V1_Entities_Supplier"
+        },
+        "urls": {
+          "type": "string"
+        }
+      }
+    },
+    "OpenAPI_V1_Entities_Column": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "key": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "generic",
+            "number",
+            "text",
+            "list",
+            "images",
+            "dimensions",
+            "docs",
+            "quantity",
+            "vendor",
+            "assignee",
+            "purchase_orders",
+            "invoices",
+            "date",
+            "url"
+          ]
+        },
+        "position": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "property": {
+          "type": "string"
+        }
+      },
+      "description": "OpenAPI_V1_Entities_Column model"
+    },
+    "OpenAPI_V1_Entities_PurchaseOrder": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "rev_num": {
+          "type": "string"
+        },
+        "last_revision_num": {
+          "type": "string"
+        },
+        "project_id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "creator_id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "label": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "common_status": {
+          "type": "string"
+        },
+        "project_name": {
+          "type": "s",
+          "format": "g"
+        },
+        "purchase_order_date": {
+          "type": "s",
+          "format": "g"
+        },
+        "delivery_date": {
+          "type": "s",
+          "format": "g"
+        },
+        "ship_via": {
+          "type": "s",
+          "format": "g"
+        },
+        "note": {
+          "type": "string"
+        },
+        "payment_terms": {
+          "type": "string"
+        },
+        "currency": {
+          "type": "string"
+        },
+        "documents_count": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "comments_count": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "created_at": {
+          "type": "created_at"
+        },
+        "updated_at": {
+          "type": "updated_at"
+        },
+        "vendor_id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "vendor_address_id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "vendor_contact_id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "shipping_client_id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "shipping_client": {
+          "$ref": "#/definitions/OpenAPI_V1_Entities_Client"
+        },
+        "shipping_client_address_id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "shipping_client_contact_id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "billing_client_id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "billing_client": {
+          "$ref": "#/definitions/OpenAPI_V1_Entities_Client"
+        },
+        "billing_client_address_id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "billing_client_contact_id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "quickbooks_id": {
+          "type": "string"
+        },
+        "quickbooks_sync_token": {
+          "type": "string"
+        },
+        "quickbooks_url": {
+          "type": "string"
+        },
+        "amount": {
+          "type": "decimal"
+        },
+        "total": {
+          "type": "decimal"
+        },
+        "shipping_cost": {
+          "type": "decimal"
+        },
+        "packing_cost": {
+          "type": "decimal"
+        },
+        "duties_cost": {
+          "type": "decimal"
+        },
+        "install_cost": {
+          "type": "decimal"
+        },
+        "other_cost": {
+          "type": "decimal"
+        },
+        "sales_tax": {
+          "type": "decimal"
+        },
+        "invoiced_amount": {
+          "type": "decimal"
+        },
+        "paid_amount": {
+          "type": "decimal"
+        },
+        "due_amount": {
+          "type": "decimal"
+        },
+        "items": {
+          "$ref": "#/definitions/OpenAPI_V1_Entities_PurchaseOrderItem"
+        },
+        "vendor": {
+          "$ref": "#/definitions/OpenAPI_V1_Entities_Contacts_Contact"
+        }
+      },
+      "description": "OpenAPI_V1_Entities_PurchaseOrder model"
+    },
+    "OpenAPI_V1_Entities_Client": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "name": {
+          "type": "string"
+        },
+        "data": {
+          "type": "string"
+        },
+        "addresses": {
+          "$ref": "#/definitions/OpenAPI_V1_Entities_Contacts_Address"
+        },
+        "people": {
+          "$ref": "#/definitions/OpenAPI_V1_Entities_Contacts_Person"
+        },
+        "category": {
+          "$ref": "#/definitions/OpenAPI_V1_Entities_Contacts_Category"
+        }
+      }
+    },
+    "OpenAPI_V1_Entities_PurchaseOrderItem": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "unit_type": {
+          "type": "string"
+        },
+        "quantity": {
+          "type": "decimal"
+        },
+        "price": {
+          "type": "decimal"
+        },
+        "taxable": {
+          "type": "boolean"
+        }
+      }
+    },
+    "OpenAPI_V1_Entities_Invoice": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "project_id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "status": {
+          "type": "string"
+        },
+        "invoice_date": {
+          "type": "s",
+          "format": "g"
+        },
+        "due_date": {
+          "type": "s",
+          "format": "g"
+        },
+        "note": {
+          "type": "string"
+        },
+        "client_email": {
+          "type": "string"
+        },
+        "payment_terms": {
+          "type": "string"
+        },
+        "label": {
+          "type": "string"
+        },
+        "tax_amount": {
+          "type": "decimal"
+        },
+        "taxable_amount": {
+          "type": "decimal"
+        },
+        "amount": {
+          "type": "decimal"
+        },
+        "amount_with_tax": {
+          "type": "decimal"
+        },
+        "balance": {
+          "type": "decimal"
+        },
+        "retainer_amount": {
+          "type": "decimal"
+        },
+        "products_amount": {
+          "type": "decimal"
+        },
+        "services_amount": {
+          "type": "decimal"
+        },
+        "balance_transactions_amount": {
+          "type": "decimal"
+        }
+      },
+      "description": "OpenAPI_V1_Entities_Invoice model"
+    },
+    "OpenAPI_V1_Entities_ColumnValues_Image": {
+      "type": "object",
+      "properties": {
+        "url": {
+          "type": "string"
+        },
+        "small_url": {
+          "type": "string"
+        },
+        "default": {
+          "type": "boolean"
+        },
+        "presentable": {
+          "type": "boolean"
+        }
+      }
+    },
+    "OpenAPI_V1_Entities_ColumnValues_Doc": {
+      "type": "object",
+      "properties": {
+        "url": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "extension": {
+          "type": "string"
+        }
+      }
+    },
+    "OpenAPI_V1_Entities_Supplier": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "name": {
+          "type": "string"
+        },
+        "data": {
+          "type": "string"
+        },
+        "addresses": {
+          "$ref": "#/definitions/OpenAPI_V1_Entities_Contacts_Address"
+        },
+        "people": {
+          "$ref": "#/definitions/OpenAPI_V1_Entities_Contacts_Person"
+        },
+        "category": {
+          "$ref": "#/definitions/OpenAPI_V1_Entities_Contacts_Category"
+        }
+      }
+    },
+    "OpenAPI_V1_Entities_ProjectFaildItem": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "error": {
+          "type": "string"
+        }
+      }
+    },
+    "OpenAPI_V1_Entities_Area": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "code": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "position": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "layer_id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "project_id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "is_used": {
+          "type": "boolean"
+        }
+      },
+      "description": "OpenAPI_V1_Entities_Area model"
+    },
+    "OpenAPI_V1_Entities_Template": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "name": {
+          "type": "string"
+        },
+        "position": {
+          "type": "integer",
+          "format": "int32"
+        }
+      },
+      "description": "OpenAPI_V1_Entities_Template model"
+    },
+    "OpenAPI_V1_Entities_Role": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "name": {
+          "type": "string"
+        },
+        "admin": {
+          "type": "boolean"
+        },
+        "dashboard_and_recycle_bin": {
+          "type": "string",
+          "enum": [
+            "edit",
+            "view",
+            "no_access"
+          ]
+        },
+        "library": {
+          "type": "string",
+          "enum": [
+            "edit",
+            "view",
+            "no_access"
+          ]
+        },
+        "moodboards": {
+          "type": "string",
+          "enum": [
+            "edit",
+            "view",
+            "no_access"
+          ]
+        },
+        "accounting": {
+          "type": "string",
+          "enum": [
+            "edit",
+            "view",
+            "no_access"
+          ]
+        },
+        "template_configuration": {
+          "type": "string",
+          "enum": [
+            "edit",
+            "view",
+            "no_access"
+          ]
+        },
+        "role_managment": {
+          "type": "string",
+          "enum": [
+            "edit",
+            "view",
+            "no_access"
+          ]
+        },
+        "sharing": {
+          "type": "string",
+          "enum": [
+            "edit",
+            "view",
+            "no_access"
+          ]
+        },
+        "contacts": {
+          "type": "strin",
+          "enum": [
+            "edit",
+            "view",
+            "no_access"
+          ]
+        },
+        "integrations": {
+          "type": "string",
+          "enum": [
+            "edit",
+            "view",
+            "no_access"
+          ]
+        },
+        "download_report": {
+          "type": "string",
+          "enum": [
+            "on",
+            "off"
+          ]
+        },
+        "add_and_manage_items": {
+          "type": "string",
+          "enum": [
+            "on",
+            "off"
+          ]
+        },
+        "upload_and_update_data": {
+          "type": "string",
+          "enum": [
+            "on",
+            "off"
+          ]
+        },
+        "accounting_and_invoices": {
+          "type": "string",
+          "enum": [
+            "on",
+            "off"
+          ]
+        },
+        "inventory_actions": {
+          "type": "string",
+          "enum": [
+            "on",
+            "off"
+          ]
+        }
+      },
+      "description": "OpenAPI_V1_Entities_Role model"
+    },
+    "OpenAPI_V1_Entities_ClientProposal": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "label": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "subtotal": {
+          "type": "decimal"
+        },
+        "total": {
+          "type": "decimal"
+        },
+        "taxes": {
+          "type": "decimal"
+        },
+        "taxable_amount": {
+          "type": "decimal"
+        }
+      },
+      "description": "OpenAPI_V1_Entities_ClientProposal model"
+    }
+  }
+}

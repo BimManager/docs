@@ -1,0 +1,14 @@
+services:
+  mintlify:
+    image: node:20-alpine
+    ports:
+      - 7777:3000
+    volumes:
+      - $PWD:/docs
+      - mintlify-volume:/docs/node_modules
+    working_dir: /docs
+    command: sh -c 'npm i mintlify && npx mintlify dev'
+
+volumes:
+  mintlify-volume:
+      

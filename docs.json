@@ -36,7 +36,30 @@
       },
       {
         "tab": "API Reference",
-	"openapi": "https://app.fohlio.com/be/openapi/docs",
+        "groups": [
+          {
+            "group": "API Documentation",
+            "pages": [
+              "api-reference/introduction"
+            ]
+          },
+          {
+            "group": "Endpoint Examples",
+            "pages": [
+              "api-reference/endpoint/get",
+              "api-reference/endpoint/create",
+              "api-reference/endpoint/delete",
+              "api-reference/endpoint/webhook"
+            ]
+          }
+        ]
+      },
+      {
+	"tab": "Fohlio",
+	"openapi": {
+	  "source": "swagger.yaml",
+	  "directory": "."
+	}
       }
     ],
     "global": {

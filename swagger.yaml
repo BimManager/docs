@@ -1,0 +1,108 @@
+---
+openapi: 3.0.1
+info:
+  title: Fohlio REST API
+  description: This is the documentation for the Fohlio REST API.
+  version: 1.0.0
+components:
+  schemas:
+    projectModel:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Unique identifier for the object
+    projectsModel:
+      type: array
+      items:
+        "$ref": "#/components/schemas/projectModel"
+    requestBodyProjectUpdate:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The project name
+        category_ids:
+          type: array
+          items:
+            type: integer
+          description: The project schedule ids
+  examples:
+    projectExample:
+      summary: A sample project response
+      value:
+        id: 1
+    projectsExample:
+      summary: Sample list of projects response
+      value:
+      - id: 1
+      - id: 2
+    requestBodyProjectUpdateExample:
+      summary: Sample update project request body
+      value:
+        name: Updated name
+        category_ids:
+        - 1
+        - 2
+        - 3
+  securitySchemes:
+    apiKey:
+      type: apiKey
+      name: Authorization
+      in: header
+servers:
+- url: https://app.fohlio.com/be/openapi
+paths:
+  "/projects":
+    get:
+      summary: List
+      tags:
+      - Project
+      description: Projects list
+      operationId: projects#list
+      security:
+      - apiKey: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              examples:
+                example:
+                  "$ref": "#/components/examples/projectsExample"
+              schema:
+                "$ref": "#/components/schemas/projectsModel"
+  "/projects/{id}":
+    parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: string
+    put:
+      summary: Update
+      tags:
+      - Project
+      description: Updates a project
+      operationId: projects#update
+      parameters: []
+      security:
+      - apiKey: []
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              examples:
+                example:
+                  "$ref": "#/components/examples/projectExample"
+              schema:
+                "$ref": "#/components/schemas/projectModel"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/requestBodyProjectUpdate"
+            examples:
+              example:
+                "$ref": "#/components/examples/requestBodyProjectUpdateExample"
